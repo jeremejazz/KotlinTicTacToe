@@ -79,6 +79,79 @@ class Game {
         }
     }
 
+    private fun checkTheBoard() {
+        val winningCombinations = listOf(
+            listOf(1,1,2),
+            listOf(3,4,5),
+            listOf(6,7,8),
+            listOf(0,3,6),
+            listOf(1,4,7),
+            listOf(2,5,8),
+            listOf(0,4,8),
+            listOf(2,4,6),
+            )
+
+        val player1Cells = mutableListOf<Int>()
+        val player2Cells = mutableListOf<Int>()
+
+        board.forEachIndexed { index, cell ->
+            if(cell.placeholder == 'X'){
+                player1Cells.add(element = index)
+            }
+            if(cell.placeholder == 'O'){
+                player2Cells.add(element = index)
+            }
+        }
+//        println("YOUR MOVES: $player1Cells")
+//        println("COMPUTER MOVES: $player2Cells")
+        run CombinationLoop@{
+            winningCombinations.forEach { combination ->
+                if(player1Cells.containsAll(elements=combination)){
+                    won()
+                    return@CombinationLoop
+                }
+                if(player2Cells.containsAll(elements = combination)){
+                    lost()
+                    return@CombinationLoop
+                }
+            }
+        }
+
+        if(board.none{ it is Cell.Empty} && status is Status.Running){
+            draw()
+        }
+
+        if(status is Status.GameOver){
+            finish()
+        }
+
+    }
+
+    private fun finish(){
+        status = Status.Idle
+        board.replaceAll{ Cell.Empty }
+    }
+
+
+
+    private fun won() {
+        status = Status.GameOver
+        printBoard()
+        println("Congratulations ${player.name}, You WON!")
+    }
+
+    private fun lost() {
+        status = Status.GameOver
+        printBoard()
+        println("Sorry ${player.name}, You LOST!")
+    }
+
+    private fun draw() {
+        status = Status.GameOver
+        printBoard()
+        println("DRAW!")
+    }
+
     private fun printBoard(){
 
         println("     ************")
