@@ -11,6 +11,8 @@ class Game {
         println("| Welcome to TIC-TAC-TOE |")
         println("| Pick a number from 1-9 |")
         println(" ------------------------ ")
+
+        printBoard()
     }
 
     private fun getName(){
@@ -21,8 +23,23 @@ class Game {
             player = Player(name = name, symbol = 'X')
             println("It's your move, $name")
         }catch(e: Throwable){
-            println(e.message)
+            println("Invalid name.")
         }
+    }
+
+    private fun printBoard(){
+        println()
+        println("*****")
+
+
+        board.forEachIndexed{ i, item ->
+            print("${item.placeholder} ")
+            if((i+1) % 3 == 0 ){
+                println()
+            }
+        }
+        println("*****")
+        println()
     }
 }
 
