@@ -48,15 +48,34 @@ class Game {
 
     }
 
-    fun setCell(cellNumber: Int): Unit {
+    private fun setCell(cellNumber: Int): Unit {
         val cell = board[cellNumber]
         if (cell is Cell.Empty){
             board.set(index = cellNumber,
                 element = Cell.Filled(player=player)
                 )
+            generateComputerMove()
             printBoard()
         }else{
             println("Cell Taken, Choose Another.")
+        }
+    }
+
+    private fun generateComputerMove(): Unit {
+        try {
+            val availableCells = mutableListOf<Int>()
+            board.forEachIndexed { index, cell ->
+                if (cell is Cell.Empty) availableCells.add(element=index)
+            }
+            if(availableCells.isNotEmpty()){
+                val randomCell = availableCells.random()
+                board.set(
+                    index=randomCell,
+                    element = Cell.Filled(player=Player())
+                )
+            }
+        }catch(e: Throwable){
+            println("Error: ${e.message}")
         }
     }
 
