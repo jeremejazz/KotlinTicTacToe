@@ -11,9 +11,13 @@ class Game {
         println("| Welcome to TIC-TAC-TOE |")
         println("| Pick a number from 1-9 |")
         println(" ------------------------ ")
-
         getName()
+        while(status is Status.Running){
+              getCell()
+        }
+
     }
+
 
     private fun getName(){
         print("Choose Your Name: ")
@@ -25,6 +29,34 @@ class Game {
             printBoard()
         }catch(e: Throwable){
             println("Invalid name.")
+        }
+    }
+
+    private fun getCell(){
+
+        print("Enter a number (1-9): ")
+        val input = readlnOrNull()
+
+        try{
+            require(value = input != null)
+            val cellNumber = input.toInt() - 1
+            require(value = cellNumber in 0 .. 8)
+            setCell(cellNumber)
+        } catch (e: Throwable){
+            println("Invalid Number")
+        }
+
+    }
+
+    fun setCell(cellNumber: Int): Unit {
+        val cell = board[cellNumber]
+        if (cell is Cell.Empty){
+            board.set(index = cellNumber,
+                element = Cell.Filled(player=player)
+                )
+            printBoard()
+        }else{
+            println("Cell Taken, Choose Another.")
         }
     }
 
