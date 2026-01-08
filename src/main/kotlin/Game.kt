@@ -12,7 +12,7 @@ class Game {
         println("| Pick a number from 1-9 |")
         println(" ------------------------ ")
 
-        printBoard()
+        getName()
     }
 
     private fun getName(){
@@ -22,24 +22,28 @@ class Game {
             require(value = name != null)
             player = Player(name = name, symbol = 'X')
             println("It's your move, $name")
+            printBoard()
         }catch(e: Throwable){
             println("Invalid name.")
         }
     }
 
     private fun printBoard(){
-        println()
-        println("*****")
 
-
+        println("     ************")
         board.forEachIndexed{ i, item ->
-            print("${item.placeholder} ")
+            if(i % 3 == 0){
+
+                print("     | ")
+            }
+            print("${item.placeholder}  ")
+
             if((i+1) % 3 == 0 ){
-                println()
+                println("| ")
             }
         }
-        println("*****")
-        println()
+        println("     ************")
+
     }
 }
 
