@@ -1,5 +1,7 @@
 package me.jereme
 
+import kotlin.system.exitProcess
+
 class Game {
     private val board = MutableList<Cell>(size=9){ Cell.Empty }
     private var status: Status= Status.Idle
@@ -55,6 +57,7 @@ class Game {
                 element = Cell.Filled(player=player)
                 )
             generateComputerMove()
+            checkTheBoard()
             printBoard()
         }else{
             println("Cell Taken, Choose Another.")
@@ -123,6 +126,7 @@ class Game {
 
         if(status is Status.GameOver){
             finish()
+            playAgain()
         }
 
     }
@@ -150,6 +154,28 @@ class Game {
         status = Status.GameOver
         printBoard()
         println("DRAW!")
+    }
+
+    private fun playAgain() {
+        print("Do you wish to play another one? Y/N: ")
+        val input = readlnOrNull()
+
+        try {
+            require(input != null)
+            val capitalizedInput = input.replaceFirstChar(Char::titlecase)
+            val positive = capitalizedInput.contains('Y')
+            val negative = capitalizedInput.contains('N')
+            require(positive || negative)
+            if(positive) {
+                start()
+            }
+            else if(negative) {
+                exitProcess(0)
+            }
+        }catch (e: Throwable){
+            println("Wrong Option.")
+            playAgain()
+        }
     }
 
     private fun printBoard(){
