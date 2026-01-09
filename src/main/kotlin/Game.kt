@@ -141,7 +141,9 @@ class Game {
     private fun won() {
         status = Status.GameOver
         printBoard()
+        println()
         println("Congratulations ${player.name}, You WON!")
+        println()
     }
 
     private fun lost() {
